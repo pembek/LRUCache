@@ -21,21 +21,40 @@ public class MyHashMap {
     }
 
     public DoublyLinkedNode get(String key){
-        DoublyLinkedNode<Item> doublyLinkedNode = new DoublyLinkedNode<Item>(new Item());
-        // TODO if not exists return null
-        return doublyLinkedNode;
+        Node curr = buckets[key.hashCode()];
+
+        while(curr != null){
+            if(key == curr.key)
+                return curr.value;
+            else curr = curr.next;
+        }
+
+        return null;
     }
 
     public void put(String key, DoublyLinkedNode value){
+        Node curr = buckets[key.hashCode()];
 
-    }
-
-    public void update(String key, DoublyLinkedNode value){
-
+        while(curr != null){
+            if(key == curr.key) {
+                curr.value = value;
+            }else curr = curr.next;
+        }
+        // not found, insert
+        curr = new Node(key, value);
+        return;
     }
 
     public void remove(String key){
+        Node curr = buckets[key.hashCode()];
+        if(curr == null) return;
 
+        while(curr != null){
+            if(key == curr.key) {
+                curr = null;
+            }else curr = curr.next;
+        }
+        return;
     }
 
     public int hashCode(String s){

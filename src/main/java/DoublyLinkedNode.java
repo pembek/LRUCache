@@ -1,13 +1,13 @@
 public class DoublyLinkedNode{
     String key; // key is stored just for information, it is necessary for passing to hashmap
     Item item;
-    DoublyLinkedNode head;
-    DoublyLinkedNode tail;
+    DoublyLinkedNode next;
+    DoublyLinkedNode prev;
 
     DoublyLinkedNode(String key, Item item){
         this.setItem(item);
-        head = null;
-        tail = null;
+        next = null;
+        prev = null;
     }
 
     public Item getItem() {

@@ -19,7 +19,16 @@ public class LRUCacheWithHashMap implements LRUCache, Iterable{
     @Override
     public Item get(String key) {
         DoublyLinkedNode node = hashMap.get(key);
-        //TODO put node to the back of the list
+        // put node to the back of the list
+        // remove node
+        node.next.prev = node.prev;
+        node.prev.next = node.next;
+        // add to tail
+        node.next = null;
+        node.prev = tail;
+        tail.next = node;
+        tail = node;
+
         return node.getItem();
     }
 
@@ -30,30 +39,35 @@ public class LRUCacheWithHashMap implements LRUCache, Iterable{
 
         //check hashmap
         DoublyLinkedNode node = hashMap.get(key);
+
         if(node != null){  // if it doesn't exists in hashmap
             DoublyLinkedNode newNode = new DoublyLinkedNode(key, value);
             hashMap.put(key,newNode);
             if(count < capacity){
-                moveToBack(newNode);
+                //move to back
+                node.next = null;
+                node.prev = tail;
+                tail.next = node;
+                tail = node;
                 count++;
             }else{
-                DoublyLinkedNode removedNode = removeFromHead();
-                hashMap.remove(removedNode.key);
-                moveToBack(newNode);
+                // remove from head
+                head.next.prev = null;
+                head = head.next;
+                //move to back
+                node.next = null;
+                node.prev = tail;
+                tail.next = node;
+                tail = node;
             }
         }else{ // if already exists
-            hashMap.update(key, node);
-            moveToBack(node);
+            hashMap.put(key, node);
+            //move to back
+            node.next = null;
+            node.prev = tail;
+            tail.next = node;
+            tail = node;
         }
-
-    }
-
-    public void moveToBack(DoublyLinkedNode node){
-
-    }
-
-    public DoublyLinkedNode removeFromHead(){
-        return head;
     }
 
     @Override
